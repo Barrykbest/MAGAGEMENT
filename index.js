@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const User = require('../models/User'); // Ensure this path is correct
+const User = require('./models/User'); // Ensure this path is correct
 
 
 const app = express();
