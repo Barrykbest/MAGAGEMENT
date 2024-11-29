@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster</title>
+    <link rel="stylesheet" href="/taskstyle.css">
+</head>
+<body>
+    <div id="app">
+        <h1 class="headline">Welcome to TaskMaster</h1>
+        <p class="intro">Add Tasks below</p>
+        <div id="task-form">
+            <input type="text" id="title" placeholder="Enter Task Title" /> <br><br>
+            <textarea name="Description" id="description" placeholder="Enter Task Description..."></textarea> <br><br>
+            <label for="date">Task Due date:</label> <br>
+            <input id="deadline" type="date" /> <br><br>
+            <label for="priority">Priority Level:</label> <br>
+            <select id="priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select> <br><br>
+            <button id="btn" class="addBtn">Add Task</button>
+        </div>
+
+        <div class="addedTasks">
+            <h2 class="addlist">Tasks List</h2>
+            <!-- Tasks will be dynamically appended here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleInput = document.getElementById('title');
+            const descriptionInput = document.getElementById('description');
+            const deadlineInput = document.getElementById('deadline');
+            const prioritySelect = document.getElementById('priority');
+            const addTaskButton = document.getElementById('btn');
+            const addedTasksDiv = document.querySelector('.addedTasks');
+
+            // Event listener for "Add Task" button
+            addTaskButton.addEventListener('click', () => {
+                // Get values from the form
+                const title = titleInput.value.trim();
+                const description = descriptionInput.value.trim();
+                const deadline = deadlineInput.value;
+                const priority = prioritySelect.value;
+
+                // Validate inputs
+                if (!title || !description || !deadline) {
+                    alert('Please fill in all fields before adding a task.');
+                    return;
+                }
+
+                // Create a new task element
+                const taskElement = document.createElement('div');
+                taskElement.classList.add('task');
+                taskElement.innerHTML = `
+                    <h3 class="task-title">${title}</h3>
+                    <p class="task-description ptask">${description}</p>
+                    <p class="task-deadline ptask"><strong>Deadline:</strong> ${deadline}</p>
+                    <p class="task-priority ptask"><strong>Priority:</strong> ${priority.charAt(0).toUpperCase() + priority.slice(1)}</p>
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                `;
+
+                // Append the task to the addedTasks div
+                addedTasksDiv.appendChild(taskElement);
+
+                // Clear the form inputs
+                titleInput.value = '';
+                descriptionInput.value = '';
+                deadlineInput.value = '';
+                prioritySelect.value = 'low';
+            });
+
+            // Event listener for editing and deleting tasks
+            addedTasksDiv.addEventListener('click', (event) => {
+                const taskElement = event.target.closest('.task');
+
+                if (event.target.classList.contains('delete-btn')) {
+                    // Delete task
+                    taskElement.remove();
+                }
+
+                if (event.target.classList.contains('edit-btn')) {
+                    // Edit task
+                    const title = taskElement.querySelector('.task-title').textContent;
+                    const description = taskElement.querySelector('.task-description').textContent;
+                    const deadlineText = taskElement.querySelector('.task-deadline').textContent.split(': ')[1];
+                    const priorityText = taskElement.querySelector('.task-priority').textContent.split(': ')[1].toLowerCase();
+
+                    // Pre-fill the form with existing task data
+                    titleInput.value = title;
+                    descriptionInput.value = description;
+                    deadlineInput.value = deadlineText;
+                    prioritySelect.value = priorityText;
+
+                    // Remove the task being edited
+                    taskElement.remove();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
