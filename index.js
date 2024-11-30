@@ -8,9 +8,13 @@ const app = express();
 // Path to the users.json file
 const USERS_FILE = path.join(__dirname, 'users.json');
 
+// Import task routes
+const taskRoutes = require('./routes/task');
+
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 
 // Middleware for static files
 app.use(express.static('public'));
@@ -18,7 +22,7 @@ app.use(express.static('public'));
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
 
-// Utility function to read and write to the JSON file
+// Utility function to read and write to the users.json file
 const readUsersFile = () => {
   if (!fs.existsSync(USERS_FILE)) {
     fs.writeFileSync(USERS_FILE, JSON.stringify([], null, 2));
@@ -98,7 +102,7 @@ app.post('/login', async (req, res) => {
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (isPasswordMatch) {
       console.log(`User ${name} logged in successfully!`);
-      return res.render('home'); // Render the home page
+      return res.render('home', { username: name }); // Render the home page
     } else {
       console.log('Incorrect password');
       return res.status(401).send('Incorrect password');
@@ -108,6 +112,9 @@ app.post('/login', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
+
+// Use task routes
+app.use(taskRoutes);
 
 // Start the server
 const port = 4100;

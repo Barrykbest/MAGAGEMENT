@@ -1,6 +1,10 @@
 [
   {
+    "name": "Barikuma",
+    "password": "$2b$10$QRpEBrEt85Tt/DeKeM8PJO51blrwJt53bGQTJgw1tQorBc0995wcm"
+  },
+  {
     "name": "ada",
-    "password": "$2b$10$QhkL3V8TmOuG5SraD.1xJu4T9lEeGJGVtKTGcog/ur/u4wxG.m1XO"
+    "password": "$2b$10$DYROtJt9XNK3QiWZW7373etNripaRxexPeI3Gh7jgKAamxpQDlAKO"
   }
 ]
